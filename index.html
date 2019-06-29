@@ -8,15 +8,18 @@
         </style>
 	</head>
 	<body>
-		<script src="js/three.js"></script>
+        <script src="js/three.js"></script>
+        <script src="js/OrbitControls.js"></script>
 		<script>
             // Our Javascript will go here.
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
             const renderer = new THREE.WebGLRenderer();
             renderer.setSize( window.innerWidth, window.innerHeight );
             document.body.appendChild( renderer.domElement );
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 10000 );
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
             const geometry = new THREE.BoxGeometry( 1, 1, 1 );
             const material = new THREE.MeshNormalMaterial();
@@ -24,19 +27,15 @@
             scene.add( cube );
 
             camera.position.z = 5;
+            controls.update();
 
             let time = 0;
 
             function animate() {
                 requestAnimationFrame( animate );
+                controls.update();
 
                 time += 0.01;
-
-                cube.rotation.x += 0.01;
-                cube.rotation.y += 0.01;
-
-                cube.position.x = Math.cos(time) + 0;
-                cube.position.y = Math.sin(time) + 0;
 
                 renderer.render( scene, camera );
             }
