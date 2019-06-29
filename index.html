@@ -17,14 +17,24 @@
             document.body.appendChild( renderer.domElement );
 
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 10000 );
+            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-            const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-            const material = new THREE.MeshNormalMaterial();
-            const cube = new THREE.Mesh( geometry, material );
-            scene.add( cube );
+            const cubeGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+            const cubeMaterial = new THREE.MeshNormalMaterial();
+            const cube1 = new THREE.Mesh( cubeGeometry, cubeMaterial );
+            const cube2 = new THREE.Mesh( cubeGeometry, cubeMaterial );
+
+            const lineMaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+            const lineGeometry = new THREE.Geometry();
+            lineGeometry.vertices.push(cube1.position);
+            lineGeometry.vertices.push(cube2.position);
+            const line = new THREE.Line( lineGeometry, lineMaterial );
+
+            scene.add( cube1 );
+            scene.add( cube2 );
+            scene.add(line);
 
             camera.position.z = 5;
             controls.update();
@@ -36,6 +46,8 @@
                 controls.update();
 
                 time += 0.01;
+                cube1.position.x = -20;
+                cube2.position.x = 20;
 
                 renderer.render( scene, camera );
             }
